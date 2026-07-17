@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<meta name="theme-color" content="#090b0d" />
+<title>Sr. Mono: Lavado Total — MVP Online</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+  <canvas id="game"></canvas>
+  <div id="loading"><div><div class="eyebrow">Sr. Mono Car Wash · Manta</div><div style="font-size:34px;font-weight:900;margin-top:7px">CARGANDO LAVADO TOTAL</div><div class="bar"><i></i></div></div></div>
+  <section id="menu">
+    <div class="menu-inner">
+      <div class="eyebrow">MVP ONLINE · MANTA, ECUADOR</div>
+      <h1>Sr. Mono:<span>Lavado Total</span></h1>
+      <div class="location">Car Wash & Detailing</div>
+      <div class="menu-buttons">
+        <button class="menu-btn primary" id="startBtn">▶ Iniciar partida <small>ENTER</small></button>
+        <button class="menu-btn" id="washBtn">💧 Modo lavado <small>MISIÓN 01</small></button>
+        <button class="menu-btn" id="detailBtn">★ Modo detallado <small>PULIDO</small></button>
+        <button class="menu-btn" id="freeBtn">⌖ Modo libre <small>EXPLORAR</small></button>
+        <button class="menu-btn" id="upgradeBtn">🔧 Mejoras <small>TALLER</small></button>
+      </div>
+      <div class="menu-card panel"><div class="hud-title">Desafío diario</div><b>Limpieza profesional</b><br><span style="color:var(--muted)">Completa el lavado sin dejar espuma, agua ni suciedad.</span></div>
+      <div class="menu-footer"><span class="badge">WASD</span>MOVER &nbsp; <span class="badge">1–4</span>HERRAMIENTAS &nbsp; <span class="badge">CLIC</span>USAR</div>
+    </div>
+  </section>
+
+  <div id="hud" class="hidden">
+    <div id="missionBox" class="panel hudbox"><div class="hud-title">Misión activa</div><div class="hud-big" id="missionName">Espuma Total</div><div>Manta, Ecuador</div></div>
+    <div id="topStats" class="panel hudbox"><div><span class="lime">$</span> <b id="money">8750</b> &nbsp; <span class="lime">REP</span> <b id="rep">2350</b></div><div id="stars" class="lime" style="font-size:23px">☆☆☆☆☆</div><div>Nivel <span class="lime" id="level">12</span> · <span id="timer">02:30</span></div></div>
+    <div id="objective" class="panel hudbox"><div class="hud-title">Objetivo</div><b id="objectiveText">Lava, enjuaga, seca y pule el vehículo</b><div class="progress"><i id="objectiveBar"></i></div><div style="margin-top:8px"><span id="progressText">0%</span> · Puntos <span class="lime" id="score">0</span></div></div>
+    <div id="toolbox" class="panel hudbox"><div class="hud-title">Herramientas</div><div class="tools"><button class="tool active" data-tool="foam">Espuma <span class="tool-key">1</span></button><button class="tool" data-tool="rinse">Enjuagar <span class="tool-key">2</span></button><button class="tool" data-tool="dry">Secar <span class="tool-key">3</span></button><button class="tool" data-tool="polish">Pulir <span class="tool-key">4</span></button></div><button id="chaosBtn" class="tool" style="width:100%;margin-top:8px;border-color:#803333">Mala decisión <span class="tool-key">B</span></button></div>
+    <div id="bottomHud"><div><div id="minimap"></div><div style="margin-top:5px;letter-spacing:.15em">MANTA, ECUADOR</div></div><div class="panel hudbox desktop-only">WASD mover · Clic mantener para usar · 1–4 cambiar herramienta · B caos · ESC pausa</div><div class="panel hudbox" style="min-width:190px"><div class="hud-title">Estado del vehículo</div><div>Suciedad <span class="lime" id="dirtStat">100%</span></div><div>Espuma <span class="lime" id="foamStat">0%</span></div><div>Humedad <span class="lime" id="wetStat">0%</span></div><div>Brillo <span class="lime" id="shineStat">0%</span></div></div></div>
+  </div>
+  <div id="crosshair" class="hidden"></div>
+  <div id="actionMessage" class="panel hidden">Acércate al vehículo y apunta a un panel.</div>
+  <div id="mobileControls" class="hidden"><div class="dpad"><button class="up" data-move="up">▲</button><button class="left" data-move="left">◀</button><button class="down" data-move="down">▼</button><button class="right" data-move="right">▶</button></div><button class="mobile-action" id="mobileAction">USAR</button></div>
+  <div id="missionComplete" class="hidden"><div class="modal panel"><div class="eyebrow">Sr. Mono · Detalle Premium</div><h2>Misión <span class="lime">completada</span></h2><p>Entrega premium realizada con éxito.</p><div class="result-grid"><div class="result-card">Pago recibido<b id="rewardMoney">$120</b></div><div class="result-card">Reputación<b>+1</b></div><div class="result-card">Calificación<b>★★★★★</b></div></div><button id="nextMission" class="cta">Aceptar siguiente misión</button><button id="backMenu" class="cta secondary" style="margin-top:8px">Volver al menú</button></div></div>
+  <div id="upgradeScreen" class="hidden"><div class="modal panel"><div class="eyebrow">Garage / Mejoras / Recompensas</div><h2>Mejoras</h2><p>Fondos disponibles: $<span id="upgradeMoney">8750</span></p><div class="upgrade-list"><div class="upgrade"><h3>Espuma Turbo</h3><p>+25% cobertura y velocidad.</p><button class="cta buy" data-upgrade="foam" data-price="750">Comprar $750</button></div><div class="upgrade"><h3>Hidrolavadora Pro</h3><p>+20% poder de limpieza.</p><button class="cta buy" data-upgrade="rinse" data-price="950">Comprar $950</button></div><div class="upgrade"><h3>Pulidora Pro</h3><p>+25% velocidad de brillo.</p><button class="cta buy" data-upgrade="polish" data-price="1200">Comprar $1,200</button></div></div><button id="closeUpgrades" class="cta secondary">Volver</button></div></div>
+  <div id="pauseScreen" class="hidden"><div class="modal panel" style="max-width:430px"><h2>Pausa</h2><button id="resumeBtn" class="cta">Continuar</button><button id="pauseMenuBtn" class="cta secondary" style="margin-top:8px">Salir al menú</button></div></div>
+  <div id="toast" class="toast">Mensaje</div>
+</div>
+<script type="module" src="game.js"></script>
+</body>
+</html>
